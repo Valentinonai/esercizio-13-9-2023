@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Badge, Col, ListGroup, Row } from "react-bootstrap";
+import { Badge, Col, ListGroup, Row, Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Comments from "./Comments";
 import AddComment from "./AddComment";
@@ -7,12 +7,14 @@ import AddComment from "./AddComment";
 const MovieDetails = () => {
   const parameter = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const fetchDetails = async () => {
     try {
       const risp = await fetch(`http://www.omdbapi.com/?apikey=c8870a25&i=${parameter.movieID}`);
       if (risp.ok) {
         const data = await risp.json();
         setMovieDetails(data);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -43,37 +45,40 @@ const MovieDetails = () => {
 
   return (
     <>
-      {console.log(movieDetails)}
-      {movieDetails && (
-        <Row>
-          <Col xs={3}>
-            <div style={{ position: "relative" }}>
-              <img src={movieDetails.Poster} alt="img" width={"100%"} />
-              <Badge bg="info" style={{ position: "absolute", bottom: "5px", right: "5px" }}>
-                {movieDetails.imdbRating}
-              </Badge>
-            </div>
-          </Col>
-          <Col xs={6}>
-            <div className="text-white">
-              <h1>{movieDetails.Title}</h1>
-              <h5>{movieDetails.Type}</h5>
-              <p style={{ fontWeight: "300" }}>
-                <span>Actors:</span>
-                <br></br>
-                <span>{movieDetails.Actors}</span>
-              </p>
-            </div>
-            <h5 className="text-white">Comments:</h5>
-            <ListGroup>
-              <Comments id={parameter.movieID} comments={comments} fetchComments={fetchComments} />
-            </ListGroup>
-          </Col>
-          <Col xs={3} style={{ borderLeft: "1px solid gray" }}>
-            <h2>Add Comment</h2>
-            <AddComment id={parameter.movieID} fetchComments={fetchComments} />
-          </Col>
-        </Row>
+      {!isLoading ? (
+        movieDetails && (
+          <Row>
+            <Col xs={3}>
+              <div style={{ position: "relative" }}>
+                <img src={movieDetails.Poster} alt="img" width={"100%"} />
+                <Badge bg="info" style={{ position: "absolute", bottom: "5px", right: "5px" }}>
+                  {movieDetails.imdbRating}
+                </Badge>
+              </div>
+            </Col>
+            <Col xs={6}>
+              <div className="text-white">
+                <h1>{movieDetails.Title}</h1>
+                <h5>{movieDetails.Type}</h5>
+                <p style={{ fontWeight: "300" }}>
+                  <span>Actors:</span>
+                  <br></br>
+                  <span>{movieDetails.Actors}</span>
+                </p>
+              </div>
+              <h5 className="text-white">Comments:</h5>
+              <ListGroup>
+                <Comments id={parameter.movieID} comments={comments} fetchComments={fetchComments} />
+              </ListGroup>
+            </Col>
+            <Col xs={3} style={{ borderLeft: "1px solid gray" }}>
+              <h2>Add Comment</h2>
+              <AddComment id={parameter.movieID} fetchComments={fetchComments} />
+            </Col>
+          </Row>
+        )
+      ) : (
+        <Spinner variant="light"></Spinner>
       )}
     </>
   );
