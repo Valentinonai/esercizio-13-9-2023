@@ -30,39 +30,45 @@ const TopBar = (props) => {
             Movies
           </NavLink>
         </Nav>
-        <Form
-          className="d-flex align-items-center"
-          onSubmit={(event) => {
-            event.preventDefault();
-            props.RicercaUtente(search);
-          }}
-        >
-          <Form.Control
-            type="text"
-            placeholder={`Search ${placeHolder.replace("/", "")}`}
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            style={{
-              color: "gray",
-              boxShadow: "none",
-              border: "1px solid grey",
-              backgroundColor: "transparent",
-            }}
-          />
-
-          <Button
-            type="submit"
-            style={{
-              backgroundColor: "transparent",
-              border: "1px solid gray",
-              padding: 0,
-              height: "36px",
-              marginInlineEnd: "10px",
+        {(location.pathname === "/" ||
+          location.pathname === "/movies" ||
+          location.pathname === "/TVShos" ||
+          location.pathname === "/profile" ||
+          location.pathname === "/settings") && (
+          <Form
+            className="d-flex align-items-center"
+            onSubmit={(event) => {
+              event.preventDefault();
+              props.RicercaUtente(search);
             }}
           >
-            <i className="fa fa-search icons"></i>
-          </Button>
-        </Form>
+            <Form.Control
+              type="text"
+              placeholder={`Search ${placeHolder.replace("/", "")}`}
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              style={{
+                color: "gray",
+                boxShadow: "none",
+                border: "1px solid grey",
+                backgroundColor: "transparent",
+              }}
+            />
+
+            <Button
+              type="submit"
+              style={{
+                backgroundColor: "transparent",
+                border: "1px solid gray",
+                padding: 0,
+                height: "36px",
+                marginInlineEnd: "10px",
+              }}
+            >
+              <i className="fa fa-search icons"></i>
+            </Button>
+          </Form>
+        )}
       </Navbar.Collapse>
       <div className="d-flex align-items-center justify-content-between">
         <div id="kids" className=" d-none d-md-block">
