@@ -24,17 +24,17 @@ const App = () => {
   }, [sceltaUtente.titolo]);
   return (
     <div className="App">
-      <Container className="pb-5">
-        <BrowserRouter>
-          <TopBar logo={logo} RicercaUtente={RicercaUtente} />
+      <BrowserRouter>
+        <TopBar logo={logo} RicercaUtente={RicercaUtente} />
+        <Container className="pb-5">
           <Routes>
             <Route path="/movies" element={<Movies sceltaUtente={sceltaUtente} movies={movies} />} />
             <Route path="/movies/:movieID" element={<MovieDetails />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
-        </BrowserRouter>
-      </Container>
+        </Container>
+      </BrowserRouter>
       <Footer />
     </div>
   );
