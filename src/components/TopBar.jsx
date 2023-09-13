@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Dropdown, Form, Nav, Navbar } from "react-bootstrap";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const TopBar = (props) => {
   const [search, setSearch] = useState("");
+  const [placeHolder, setPlaceHolder] = useState("");
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname) {
+      setPlaceHolder(location.pathname);
+    }
+  }, [location]);
   return (
     <Navbar expand="lg" className="navbar navbar-dark px-3" style={{ backgroundColor: "#221f1f" }}>
       <Navbar.Brand href="#home">
@@ -32,7 +39,7 @@ const TopBar = (props) => {
         >
           <Form.Control
             type="text"
-            placeholder="Search"
+            placeholder={`Search ${placeHolder.replace("/", "")}`}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             style={{
